@@ -230,6 +230,50 @@
     padding:40px 0;
     display:none;
   }
+  #index{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .kana-row{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .kana-row-head{
+    padding:14px 16px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .kana-row-head .kana-label{
+    font-weight:bold;
+    font-size:1.15rem;
+    color:var(--accent2);
+  }
+  .kana-row-head .kana-count{
+    font-size:0.75rem;
+    color:var(--sub);
+    margin-left:8px;
+  }
+  .kana-row-head .left{
+    display:flex;
+    align-items:baseline;
+  }
+  .kana-row-body{
+    display:none;
+    padding:0 16px 16px;
+    flex-direction:column;
+    gap:14px;
+  }
+  .kana-row.open .kana-row-body{display:flex;}
+  .kana-row.open .chevron{transform:rotate(180deg);}
   footer{
     max-width:900px;
     margin:30px auto 0;
@@ -258,6 +302,7 @@
 </div>
 
 <div id="count"></div>
+<div id="index"></div>
 <div id="list"></div>
 <div id="empty">該当する機種が見つかりません</div>
 
@@ -265,7 +310,7 @@
 
 <footer>
   情報は2026年8月時点でのWeb公開情報をもとにまとめたものです。演出内容は台のアップデートで変更されることがあるため、実戦前に必ず最新の解析サイトも確認してください。<br>
-  データ追加・修正の依頼はいつでもどうぞ。machines配列に項目を足すだけで新しい機種を追加できます。
+  データ追加・修正の依頼はいつでもどうぞ。machines配列に項目（name/slug/yomiなど）を足すだけで新しい機種を追加できます。
 </footer>
 
 <script>
@@ -274,6 +319,7 @@ const machines = [
   {
     name: "スマスロ北斗の拳 転生の章2",
     slug: "hokuto-tensei2",
+    yomi: "ほくとのけん",
     tags: ["pop"],
     release: "2026/01/05導入",
     items: [
@@ -287,6 +333,7 @@ const machines = [
   {
     name: "スマスロ鉄拳6",
     slug: "tekken6",
+    yomi: "てっけん",
     tags: ["pop"],
     items: [
       {
@@ -299,6 +346,7 @@ const machines = [
   {
     name: "スマスロ東京喰種（東京グール）",
     slug: "tokyoghoul",
+    yomi: "とうきょうぐーる",
     tags: ["pop"],
     items: [
       {
@@ -315,6 +363,7 @@ const machines = [
   {
     name: "スマスロ モンキーターン5",
     slug: "monkeyturn5",
+    yomi: "もんきーたーん",
     tags: ["pop"],
     items: [
       {
@@ -335,6 +384,7 @@ const machines = [
   {
     name: "スマスロ化物語",
     slug: "bakemonogatari",
+    yomi: "ばけものがたり",
     tags: ["pop"],
     items: [
       {
@@ -347,6 +397,7 @@ const machines = [
   {
     name: "スマスロ ミリオンゴッド-神々の軌跡-",
     slug: "milliongod",
+    yomi: "みりおんごっど",
     tags: ["pop"],
     items: [
       {
@@ -367,6 +418,7 @@ const machines = [
   {
     name: "スマスロ いざ番長3",
     slug: "iza-bancho3",
+    yomi: "いざばんちょう",
     tags: ["pop"],
     items: [
       {
@@ -387,6 +439,7 @@ const machines = [
   {
     name: "スマスロ 甲鉄城のカバネリ 海門決戦",
     slug: "kabaneri2",
+    yomi: "こうてつじょうのかばねり",
     tags: ["pop"],
     items: [
       {
@@ -401,20 +454,9 @@ const machines = [
     sources: [["altema", "https://altema.jp/pachimo/lkabaneriurabotan"]]
   },
   {
-    name: "スマスロ キン肉マン ～7人の悪魔超人編～",
-    slug: "kinnikuman",
-    tags: ["pop"],
-    items: [
-      {
-        timing: "ATの後半バトルパート開始画面（1G目）でPUSHボタンを押す",
-        info: "ボタンが振動すればAT継続濃厚（継続時の1/16で発生）"
-      }
-    ],
-    sources: [["altema", "https://altema.jp/pachimo/lkinnikumanmenu"]]
-  },
-  {
     name: "L戦国乙女5 業火を穿つ宿焔の双刃",
     slug: "sengoku-otome5",
+    yomi: "せんごくおとめ",
     tags: ["new"],
     release: "2026/06/08導入",
     items: [
@@ -432,6 +474,7 @@ const machines = [
   {
     name: "スマスロ ストリートファイター6",
     slug: "sf6",
+    yomi: "すとりーとふぁいたー",
     tags: ["new"],
     release: "2026/08/03導入",
     items: [
@@ -453,6 +496,7 @@ const machines = [
   {
     name: "スマスロ とある魔術の禁書目録2",
     slug: "toaru-index2",
+    yomi: "とあるまじゅつのいんでっくす",
     tags: ["new"],
     items: [
       {
@@ -469,6 +513,7 @@ const machines = [
   {
     name: "スマスロ ソードアート・オンラインⅡ（SAO2）",
     slug: "sao2",
+    yomi: "そーどあーとおんらいん",
     tags: ["new"],
     items: [
       {
@@ -480,91 +525,162 @@ const machines = [
   }
 ];
 
+const indexEl = document.getElementById("index");
 const listEl = document.getElementById("list");
 const countEl = document.getElementById("count");
 const emptyEl = document.getElementById("empty");
 const searchEl = document.getElementById("search");
 const filterBtns = document.querySelectorAll(".filter-btn");
 let activeFilter = "all";
+const openRows = new Set(); // 開いている行（あ行、か行…）を記憶しておく
 
 function tagLabel(t){
   return t === "pop" ? '<span class="tag pop">人気</span>' : '<span class="tag new">最新</span>';
 }
 
+// 五十音の行分け。読み(yomi)の先頭1文字だけを見て判定する
+const KANA_ROWS = [
+  { label: "あ", chars: "あいうえお" },
+  { label: "か", chars: "かきくけこがぎぐげご" },
+  { label: "さ", chars: "さしすせそざじずぜぞ" },
+  { label: "た", chars: "たちつてとだぢづでどっ" },
+  { label: "な", chars: "なにぬねの" },
+  { label: "は", chars: "はひふへほばびぶべぼぱぴぷぺぽ" },
+  { label: "ま", chars: "まみむめも" },
+  { label: "や", chars: "やゆよゃゅょ" },
+  { label: "ら", chars: "らりるれろ" },
+  { label: "わ", chars: "わをんゐゑ" }
+];
+function kanaRowLabel(yomi){
+  if(!yomi) return "他";
+  const c = yomi[0];
+  const row = KANA_ROWS.find(r => r.chars.includes(c));
+  return row ? row.label : "他";
+}
+
+function buildCard(m){
+  const card = document.createElement("div");
+  card.className = "card";
+  card.id = m.slug;
+  const itemsHtml = m.items.map(it=>`
+    <div class="item">
+      <div class="label">押すタイミング</div>
+      <div class="timing">${it.timing}</div>
+      <div class="label">わかること</div>
+      <div class="info">${it.info}</div>
+    </div>
+  `).join("");
+  const sourcesHtml = m.sources ? `<div class="sources">出典: ${m.sources.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("")}</div>` : "";
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="card-title">
+        <div class="name">${m.tags.map(tagLabel).join("")}${m.name}</div>
+        <div class="meta">${m.release ? m.release + " ・ " : ""}${m.items.length}件の裏ボタン情報</div>
+      </div>
+      <div class="head-actions">
+        <button class="share-btn" type="button" data-slug="${m.slug}">🔗 リンク</button>
+        <div class="chevron">▼</div>
+      </div>
+    </div>
+    <div class="card-body">
+      ${itemsHtml}
+      ${sourcesHtml}
+    </div>
+  `;
+  card.querySelector(".card-head").addEventListener("click", (e)=>{
+    if(e.target.closest(".share-btn")) return;
+    card.classList.toggle("open");
+  });
+  card.querySelector(".share-btn").addEventListener("click", (e)=>{
+    e.stopPropagation();
+    const url = location.origin + location.pathname + "#" + m.slug;
+    const btn = e.currentTarget;
+    const done = ()=>{
+      btn.textContent = "✓ コピー済み";
+      btn.classList.add("copied");
+      setTimeout(()=>{ btn.textContent = "🔗 リンク"; btn.classList.remove("copied"); }, 1800);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done).catch(()=>{ prompt("このURLをコピーしてください", url); });
+    } else {
+      prompt("このURLをコピーしてください", url);
+    }
+  });
+  return card;
+}
+
+function getFiltered(){
+  return machines.filter(m => activeFilter === "all" || m.tags.includes(activeFilter));
+}
+
 function render(){
   const q = searchEl.value.trim().toLowerCase();
-  const filtered = machines.filter(m=>{
-    const matchesFilter = activeFilter === "all" || m.tags.includes(activeFilter);
-    const matchesSearch = !q || m.name.toLowerCase().includes(q);
-    return matchesFilter && matchesSearch;
+  const byFilter = getFiltered();
+
+  if(q){
+    // 検索中は五十音インデックスを隠してフラットな一覧を出す
+    indexEl.style.display = "none";
+    listEl.style.display = "flex";
+    const filtered = byFilter.filter(m => m.name.toLowerCase().includes(q));
+    listEl.innerHTML = "";
+    countEl.textContent = filtered.length + "機種がヒット（全" + machines.length + "機種）";
+    emptyEl.style.display = filtered.length ? "none" : "block";
+    filtered.forEach(m => listEl.appendChild(buildCard(m)));
+    return;
+  }
+
+  // 通常時：五十音（行）ごとにグループ化して表示
+  listEl.style.display = "none";
+  indexEl.style.display = "flex";
+  listEl.innerHTML = "";
+  emptyEl.style.display = byFilter.length ? "none" : "block";
+  countEl.textContent = byFilter.length + "機種を表示中（全" + machines.length + "機種）・行をタップすると開きます";
+
+  const grouped = {};
+  byFilter.forEach(m=>{
+    const label = kanaRowLabel(m.yomi);
+    (grouped[label] = grouped[label] || []).push(m);
   });
 
-  listEl.innerHTML = "";
-  countEl.textContent = filtered.length + "機種を表示中（全" + machines.length + "機種）";
-  emptyEl.style.display = filtered.length ? "none" : "block";
+  indexEl.innerHTML = "";
+  const rowOrder = KANA_ROWS.map(r=>r.label).concat(["他"]);
+  rowOrder.forEach(label=>{
+    const group = grouped[label];
+    if(!group || !group.length) return; // 該当機種が無い行は表示しない
+    group.sort((a,b)=> (a.yomi||"").localeCompare(b.yomi||"", "ja"));
 
-  filtered.forEach((m, idx)=>{
-    const card = document.createElement("div");
-    card.className = "card";
-    card.id = m.slug;
-    const itemsHtml = m.items.map(it=>`
-      <div class="item">
-        <div class="label">押すタイミング</div>
-        <div class="timing">${it.timing}</div>
-        <div class="label">わかること</div>
-        <div class="info">${it.info}</div>
+    const rowEl = document.createElement("div");
+    rowEl.className = "kana-row";
+    rowEl.dataset.row = label;
+    if(openRows.has(label)) rowEl.classList.add("open");
+    rowEl.innerHTML = `
+      <div class="kana-row-head">
+        <div class="left"><span class="kana-label">${label}行</span><span class="kana-count">（${group.length}機種）</span></div>
+        <div class="chevron">▼</div>
       </div>
-    `).join("");
-    const sourcesHtml = m.sources ? `<div class="sources">出典: ${m.sources.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("")}</div>` : "";
-    card.innerHTML = `
-      <div class="card-head">
-        <div class="card-title">
-          <div class="name">${m.tags.map(tagLabel).join("")}${m.name}</div>
-          <div class="meta">${m.release ? m.release + " ・ " : ""}${m.items.length}件の裏ボタン情報</div>
-        </div>
-        <div class="head-actions">
-          <button class="share-btn" type="button" data-slug="${m.slug}">🔗 リンク</button>
-          <div class="chevron">▼</div>
-        </div>
-      </div>
-      <div class="card-body">
-        ${itemsHtml}
-        ${sourcesHtml}
-      </div>
+      <div class="kana-row-body"></div>
     `;
-    card.querySelector(".card-head").addEventListener("click", (e)=>{
-      if(e.target.closest(".share-btn")) return;
-      card.classList.toggle("open");
+    const body = rowEl.querySelector(".kana-row-body");
+    group.forEach(m => body.appendChild(buildCard(m)));
+    rowEl.querySelector(".kana-row-head").addEventListener("click", ()=>{
+      rowEl.classList.toggle("open");
+      if(rowEl.classList.contains("open")) openRows.add(label); else openRows.delete(label);
     });
-    card.querySelector(".share-btn").addEventListener("click", (e)=>{
-      e.stopPropagation();
-      const url = location.origin + location.pathname + "#" + m.slug;
-      const btn = e.currentTarget;
-      const done = ()=>{
-        btn.textContent = "✓ コピー済み";
-        btn.classList.add("copied");
-        setTimeout(()=>{ btn.textContent = "🔗 リンク"; btn.classList.remove("copied"); }, 1800);
-      };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(done).catch(()=>{ prompt("このURLをコピーしてください", url); });
-      } else {
-        prompt("このURLをコピーしてください", url);
-      }
-    });
-    listEl.appendChild(card);
+    indexEl.appendChild(rowEl);
   });
 }
 
-// URLの#機種スラッグを見て、該当カードを自動で開いてスクロールする
+// URLの#機種スラッグを見て、該当する行を開き、カードを自動で開いてスクロールする
 function openFromHash(){
   const slug = location.hash.replace("#", "");
   if(!slug) return;
-  const exists = machines.some(m=>m.slug === slug);
-  if(!exists) return;
+  const m = machines.find(mm => mm.slug === slug);
+  if(!m) return;
   // フィルターや検索で隠れていると見つからないので、一旦全表示に戻す
   activeFilter = "all";
   searchEl.value = "";
   filterBtns.forEach(b=>b.classList.toggle("active", b.dataset.filter === "all"));
+  openRows.add(kanaRowLabel(m.yomi));
   render();
   const target = document.getElementById(slug);
   if(target){
