@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="パチスロ現行機種のPUSHボタン（裏ボタン）を押すタイミングと示唆内容だけをまとめた一覧。ニュースや広告に埋もれず、機種名で探せます。">
+<title>パチスロ PUSHボタン裏情報まとめ</title>
+
+<!--
+  Googleアナリティクス(GA4)を有効にする手順:
+  1. https://analytics.google.com/ でアカウント／プロパティを作成する
+  2. 発行された測定ID（G-から始まる文字列）を取得する
+  3. 下の2箇所の G-XXXXXXXXXX をその測定IDに置き換えて、<script>ごとコメントを外す
+-->
+<!--
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+-->
+
+<style>
+  :root{
+    --bg:#12141c;
+    --card:#1c2030;
+    --card-border:#2c3148;
+    --accent:#ff6b3d;
+    --accent2:#4dd0e1;
+    --text:#eef0f6;
+    --sub:#9aa0b4;
+    --tag-pop:#ff6b3d;
+    --tag-new:#4dd0e1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:60px;
+  }
+  header{
+    padding:24px 16px 12px;
+    text-align:center;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.4rem;
+  }
+  header p{
+    margin:0;
+    color:var(--sub);
+    font-size:0.85rem;
+  }
+  .ad-slot{
+    margin:12px auto;
+    max-width:728px;
+    min-height:60px;
+    border:1px dashed var(--card-border);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--sub);
+    font-size:0.75rem;
+  }
+  .controls{
+    max-width:900px;
+    margin:16px auto;
+    padding:0 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  #search{
+    flex:1;
+    min-width:180px;
+    padding:10px 14px;
+    border-radius:20px;
+    border:1px solid var(--card-border);
+    background:#0e1017;
+    color:var(--text);
+    font-size:0.95rem;
+  }
+  .filter-btn{
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid var(--card-border);
+    background:transparent;
+    color:var(--sub);
+    cursor:pointer;
+    font-size:0.85rem;
+  }
+  .filter-btn.active{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  #count{
+    max-width:900px;
+    margin:0 auto 8px;
+    padding:0 16px;
+    color:var(--sub);
+    font-size:0.8rem;
+  }
+  #list{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 16px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .card-head{
+    padding:14px 16px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  .card-title{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .card-title .name{
+    font-weight:bold;
+    font-size:1.02rem;
+  }
+  .card-title .meta{
+    font-size:0.75rem;
+    color:var(--sub);
+  }
+  .tag{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:10px;
+    font-size:0.7rem;
+    margin-right:4px;
+    color:#fff;
+  }
+  .tag.pop{background:var(--tag-pop);}
+  .tag.new{background:var(--tag-new);color:#0e1017;}
+  .chevron{
+    color:var(--sub);
+    transition:transform .2s;
+    font-size:1rem;
+    flex-shrink:0;
+  }
+  .card.open .chevron{transform:rotate(180deg);}
+  .head-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+  }
+  .share-btn{
+    background:transparent;
+    border:1px solid var(--card-border);
+    color:var(--sub);
+    border-radius:14px;
+    padding:5px 10px;
+    font-size:0.7rem;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .share-btn:hover{border-color:var(--accent2); color:var(--accent2);}
+  .share-btn.copied{border-color:var(--accent2); color:var(--accent2);}
+  .card.highlight{
+    animation:flash 1.6s ease;
+  }
+  @keyframes flash{
+    0%{box-shadow:0 0 0 2px var(--accent2);}
+    100%{box-shadow:0 0 0 0px transparent;}
+  }
+  .card-body{
+    display:none;
+    padding:0 16px 16px;
+    border-top:1px solid var(--card-border);
+  }
+  .card.open .card-body{display:block;}
+  .item{
+    padding:12px 0;
+    border-bottom:1px dashed var(--card-border);
+  }
+  .item:last-of-type{border-bottom:none;}
+  .item .label{
+    font-size:0.72rem;
+    color:var(--accent2);
+    font-weight:bold;
+    margin-bottom:4px;
+  }
+  .item .timing{
+    font-size:0.9rem;
+    margin-bottom:4px;
+  }
+  .item .info{
+    font-size:0.9rem;
+    color:var(--sub);
+  }
+  .note{
+    font-size:0.8rem;
+    color:var(--sub);
+    margin-top:10px;
+    line-height:1.5;
+  }
+  .sources{
+    margin-top:10px;
+    font-size:0.75rem;
+  }
+  .sources a{
+    color:var(--accent2);
+    text-decoration:none;
+    margin-right:10px;
+  }
+  #empty{
+    text-align:center;
+    color:var(--sub);
+    padding:40px 0;
+    display:none;
+  }
+  footer{
+    max-width:900px;
+    margin:30px auto 0;
+    padding:16px;
+    color:var(--sub);
+    font-size:0.75rem;
+    line-height:1.7;
+    border-top:1px solid var(--card-border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>パチスロ PUSHボタン裏情報まとめ</h1>
+  <p>機種ごとの「PUSHボタンを押すタイミング」と「わかること（示唆内容）」だけを一覧化</p>
+</header>
+
+<div class="ad-slot" id="ad-top">広告枠（例：Google AdSense / アフィリエイトバナー）</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="機種名で検索（例：北斗、鉄拳）">
+  <button class="filter-btn active" data-filter="all">すべて</button>
+  <button class="filter-btn" data-filter="pop">人気機種</button>
+  <button class="filter-btn" data-filter="new">最新台</button>
+</div>
+
+<div id="count"></div>
+<div id="list"></div>
+<div id="empty">該当する機種が見つかりません</div>
+
+<div class="ad-slot" id="ad-bottom">広告枠（例：アフィリエイトリンク集）</div>
+
+<footer>
+  情報は2026年8月時点でのWeb公開情報をもとにまとめたものです。演出内容は台のアップデートで変更されることがあるため、実戦前に必ず最新の解析サイトも確認してください。<br>
+  データ追加・修正の依頼はいつでもどうぞ。machines配列に項目を足すだけで新しい機種を追加できます。
+</footer>
+
+<script>
+// ここに機種データを追加していく。新台が出たら1オブジェクト追加するだけでOK。
+const machines = [
+  {
+    name: "スマスロ北斗の拳 転生の章2",
+    slug: "hokuto-tensei2",
+    tags: ["pop"],
+    release: "2026/01/05導入",
+    items: [
+      {
+        timing: "神拳勝舞中、第3ボタン停止時にPUSHボタンが出現している間に「PUSHボタンを押しながらレバーを叩く」",
+        info: "振動＋特殊音が発生すれば勝利濃厚。VS演出では北斗七星／死兆星でATレベルの示唆も"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lhokutotenseiurabotan"]]
+  },
+  {
+    name: "スマスロ鉄拳6",
+    slug: "tekken6",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "鉄拳コンボ中・AT中のボーナス中に「7を狙え」演出が出たとき、もう一度レバーを叩く",
+        info: "筐体がバイブすれば7揃い（鉄拳アタック濃厚）で上乗せ期待。通常時は「木人解説」の文字色で滞在モードを示唆"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/ltekken6urabotan"]]
+  },
+  {
+    name: "スマスロ東京喰種（東京グール）",
+    slug: "tokyoghoul",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "CZ失敗時にPUSHボタンを押す",
+        info: "エンドカードが出現し、内容で設定示唆・モード示唆"
+      },
+      {
+        timing: "中段チェリー成立時、第3停止後にPUSHボタンを押す",
+        info: "画面に虹色ノイズが出れば次のレバーでロングフリーズ濃厚"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/ltokyoghoulbutton"], ["nana-press", "https://nana-press.com/kaiseki/machine/889/27249/"]]
+  },
+  {
+    name: "スマスロ モンキーターン5",
+    slug: "monkeyturn5",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "第3停止後、BETボタンより先にPUSHボタンを押す",
+        info: "成功時1/2の確率で先告知が発生"
+      },
+      {
+        timing: "SGラッシュ中、第3停止のボタンを捻る（長押し気味に押す）",
+        info: "成功時1/2で下パネルが消灯＝100G以上の上乗せ期待"
+      },
+      {
+        timing: "「超抜チャレンジ」中、玉の画面破壊演出でBETボタンが出る前にPUSHボタンを押す",
+        info: "先告知の可能性"
+      }
+    ],
+    sources: [["nana-press", "https://nana-press.com/kaiseki/machine/644/18912/"], ["1geki", "https://1geki.jp/slot/l_monkeyturn5/6/"]]
+  },
+  {
+    name: "スマスロ化物語",
+    slug: "bakemonogatari",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "CZ「解呪ノ儀」中、PUSHボタン表示が出たとき、押す前に十字キーの上か下を押してからPUSHボタンを押す",
+        info: "AT当選時の一部で告知音が発生（オーラの色が赤に近いほど発生しやすい）"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lbakemonourabotan"]]
+  },
+  {
+    name: "スマスロ ミリオンゴッド-神々の軌跡-",
+    slug: "milliongod",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "GG当選画面で、告知ゲームの第3停止後から次のBETまでにボタンを押す",
+        info: "上部LEDの色でループストック種別・GGストック数を示唆（白＜青＜黄＜緑＜赤＜虹の順で期待度アップ）"
+      },
+      {
+        timing: "GG終了画面で、最終ゲームの第3停止後から次BETまでに押す",
+        info: "LEDが光ればGGストックあり"
+      },
+      {
+        timing: "SGG引き戻しゾーンで、レバーONから次BETまでに押す",
+        info: "LEDが光ればSGG引き戻し濃厚、色でゲーム数を示唆"
+      }
+    ],
+    sources: [["DMMぱちタウン", "https://p-town.dmm.com/specials/4983"]]
+  },
+  {
+    name: "スマスロ いざ番長3",
+    slug: "iza-bancho3",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "通常時、レバーONから第3停止までにPUSHボタンを押す",
+        info: "家紋ランプが白＝CZ前兆濃厚、虹＝AT前兆濃厚"
+      },
+      {
+        timing: "「決闘」中、毎ゲーム第3停止後にPUSHボタンを押す",
+        info: "勝利濃厚＋ランプ色で報酬示唆（赤なら青7以上濃厚）"
+      },
+      {
+        timing: "「絶頂決戦」中、鏡の攻撃演出発生後〜次BETまでに押す",
+        info: "バイブが発生すれば継続濃厚"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lizabanchourabotan"]]
+  },
+  {
+    name: "スマスロ 甲鉄城のカバネリ 海門決戦",
+    slug: "kabaneri2",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "「六根清浄目を狙え」演出発生時、レバーONからリール回転までの約2.8秒間にPUSHボタンを連打",
+        info: "告知音が発生すればボーナス濃厚。特定回数（黄色帯）で告知が出れば超カバネリアタック／エピソードボーナス濃厚"
+      },
+      {
+        timing: "「パネ振りモード」に変更後、レバーON〜第3停止の間",
+        info: "ボーナス当選時の約7割で「ポキューン」と先バレ告知（サブ液晶下側が赤く発光すれば変更完了の合図）"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lkabaneriurabotan"]]
+  },
+  {
+    name: "スマスロ キン肉マン ～7人の悪魔超人編～",
+    slug: "kinnikuman",
+    tags: ["pop"],
+    items: [
+      {
+        timing: "ATの後半バトルパート開始画面（1G目）でPUSHボタンを押す",
+        info: "ボタンが振動すればAT継続濃厚（継続時の1/16で発生）"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lkinnikumanmenu"]]
+  },
+  {
+    name: "L戦国乙女5 業火を穿つ宿焔の双刃",
+    slug: "sengoku-otome5",
+    tags: ["new"],
+    release: "2026/06/08導入",
+    items: [
+      {
+        timing: "エンディングでレア役成立時にPUSHボタンを押す",
+        info: "五ェ門のボイスが流れ、内容で設定示唆（聞き逃しても連打で再度確認可能）"
+      },
+      {
+        timing: "「戦国乙女ボーナス」の告知タイプ選択画面でPUSHボタンを長押し",
+        info: "告知タイプを自分で選べる"
+      }
+    ],
+    sources: [["nana-press", "https://nana-press.com/kaiseki/machine/1160/"]]
+  },
+  {
+    name: "スマスロ ストリートファイター6",
+    slug: "sf6",
+    tags: ["new"],
+    release: "2026/08/03導入",
+    items: [
+      {
+        timing: "「ドライブチャンス」のリザルト画面でPUSHボタンを押す",
+        info: "キャラボイスが発生し、セリフ内容でモード示唆（リュウ・ケンのセリフなら高モード期待）"
+      },
+      {
+        timing: "狙えカットイン発生時にPUSHボタンを押す",
+        info: "Eフラッシュが出れば停止濃厚"
+      },
+      {
+        timing: "フリーズボーナス（FB）中のVS画面でPUSHボタンを押す",
+        info: "キャラの顔が変化すれば報酬アップに期待"
+      }
+    ],
+    sources: [["nana-press", "https://nana-press.com/kaiseki/machine/1194/38100/"]]
+  },
+  {
+    name: "スマスロ とある魔術の禁書目録2",
+    slug: "toaru-index2",
+    tags: ["new"],
+    items: [
+      {
+        timing: "「プラスアクション」終了時、またはCZ失敗時にPUSHボタンを押す",
+        info: "終了画面（一枚絵）が出現し、モードや規定ゲーム数を示唆"
+      },
+      {
+        timing: "ST（AT）終了後にPUSHボタンを押す",
+        info: "獲得時にアイコン告知されなかった「裏乗せ」分が判明することがある"
+      }
+    ],
+    sources: [["nana-press", "https://nana-press.com/kaiseki/machine/1154/38018/"]]
+  },
+  {
+    name: "スマスロ ソードアート・オンラインⅡ（SAO2）",
+    slug: "sao2",
+    tags: ["new"],
+    items: [
+      {
+        timing: "通常時、「総督府」ステージへの移行演出中にPUSHボタンを押す",
+        info: "弾ランプが点灯すればCZ濃厚"
+      }
+    ],
+    sources: [["altema", "https://altema.jp/pachimo/lsao2urabotan"]]
+  }
+];
+
+const listEl = document.getElementById("list");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+const searchEl = document.getElementById("search");
+const filterBtns = document.querySelectorAll(".filter-btn");
+let activeFilter = "all";
+
+function tagLabel(t){
+  return t === "pop" ? '<span class="tag pop">人気</span>' : '<span class="tag new">最新</span>';
+}
+
+function render(){
+  const q = searchEl.value.trim().toLowerCase();
+  const filtered = machines.filter(m=>{
+    const matchesFilter = activeFilter === "all" || m.tags.includes(activeFilter);
+    const matchesSearch = !q || m.name.toLowerCase().includes(q);
+    return matchesFilter && matchesSearch;
+  });
+
+  listEl.innerHTML = "";
+  countEl.textContent = filtered.length + "機種を表示中（全" + machines.length + "機種）";
+  emptyEl.style.display = filtered.length ? "none" : "block";
+
+  filtered.forEach((m, idx)=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.id = m.slug;
+    const itemsHtml = m.items.map(it=>`
+      <div class="item">
+        <div class="label">押すタイミング</div>
+        <div class="timing">${it.timing}</div>
+        <div class="label">わかること</div>
+        <div class="info">${it.info}</div>
+      </div>
+    `).join("");
+    const sourcesHtml = m.sources ? `<div class="sources">出典: ${m.sources.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("")}</div>` : "";
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="card-title">
+          <div class="name">${m.tags.map(tagLabel).join("")}${m.name}</div>
+          <div class="meta">${m.release ? m.release + " ・ " : ""}${m.items.length}件の裏ボタン情報</div>
+        </div>
+        <div class="head-actions">
+          <button class="share-btn" type="button" data-slug="${m.slug}">🔗 リンク</button>
+          <div class="chevron">▼</div>
+        </div>
+      </div>
+      <div class="card-body">
+        ${itemsHtml}
+        ${sourcesHtml}
+      </div>
+    `;
+    card.querySelector(".card-head").addEventListener("click", (e)=>{
+      if(e.target.closest(".share-btn")) return;
+      card.classList.toggle("open");
+    });
+    card.querySelector(".share-btn").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const url = location.origin + location.pathname + "#" + m.slug;
+      const btn = e.currentTarget;
+      const done = ()=>{
+        btn.textContent = "✓ コピー済み";
+        btn.classList.add("copied");
+        setTimeout(()=>{ btn.textContent = "🔗 リンク"; btn.classList.remove("copied"); }, 1800);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(done).catch(()=>{ prompt("このURLをコピーしてください", url); });
+      } else {
+        prompt("このURLをコピーしてください", url);
+      }
+    });
+    listEl.appendChild(card);
+  });
+}
+
+// URLの#機種スラッグを見て、該当カードを自動で開いてスクロールする
+function openFromHash(){
+  const slug = location.hash.replace("#", "");
+  if(!slug) return;
+  const exists = machines.some(m=>m.slug === slug);
+  if(!exists) return;
+  // フィルターや検索で隠れていると見つからないので、一旦全表示に戻す
+  activeFilter = "all";
+  searchEl.value = "";
+  filterBtns.forEach(b=>b.classList.toggle("active", b.dataset.filter === "all"));
+  render();
+  const target = document.getElementById(slug);
+  if(target){
+    target.classList.add("open", "highlight");
+    target.scrollIntoView({behavior:"smooth", block:"start"});
+    setTimeout(()=>target.classList.remove("highlight"), 1700);
+  }
+}
+
+searchEl.addEventListener("input", render);
+filterBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    filterBtns.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+window.addEventListener("hashchange", openFromHash);
+
+render();
+openFromHash();
+</script>
+
+</body>
+</html>
