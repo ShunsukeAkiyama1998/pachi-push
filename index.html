@@ -224,6 +224,33 @@
     text-decoration:none;
     margin-right:10px;
   }
+  .card-image{
+    display:block;
+    width:100%;
+    max-height:260px;
+    object-fit:cover;
+    border-radius:8px;
+    margin:12px 0;
+  }
+  .info-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:8px;
+    font-size:0.82rem;
+  }
+  .info-table th, .info-table td{
+    border:1px solid var(--card-border);
+    padding:6px 8px;
+    text-align:left;
+  }
+  .info-table th{
+    background:#232842;
+    color:var(--text);
+    white-space:nowrap;
+  }
+  .info-table td{
+    color:var(--sub);
+  }
   #empty{
     text-align:center;
     color:var(--sub);
@@ -517,12 +544,23 @@ const machines = [
     tags: ["new"],
     items: [
       {
-        timing: "通常時、「総督府」ステージへの移行演出中(第2停止まで)にPUSHボタンを押す",
-        info: "筐体右にあるバレットランプが点灯すればCZ濃厚"
+        timing: "通常時、「総督府」ステージへの移行演出中にPUSHボタンを押す",
+        info: "弾ランプが点灯すればCZ濃厚"
       },
       {
         timing: "AT終了時・CZ終了時にPUSHボタンを押す",
-        info: "モード示唆が出ることがある"
+        info: "ボイスでモード示唆。ランプの色も連動して変わるため、聞こえにくい場合はランプの色で確認しよう",
+        table: {
+          headers: ["セリフ", "ランプの色"],
+          rows: [
+            ["信じてるから……", "白"],
+            ["一緒に頑張ろ……ね", "青"],
+            ["私とあたるまで勝ち上がって来なさいよ", "黄"],
+            ["キリト……あなたの強さの理由を見させてもらうわ", "緑"],
+            ["ヘカートⅡ……お願い。弱い私に、力を貸して。", "赤"],
+            ["LUKガン上げなのあなた!?だからかぁ…", "紫"]
+          ]
+        }
       },
       {
         timing: "「スナイパーチャンス」のジャッジ中にPUSHボタンを押す",
@@ -574,15 +612,27 @@ function buildCard(m){
   const card = document.createElement("div");
   card.className = "card";
   card.id = m.slug;
-  const itemsHtml = m.items.map(it=>`
+  // itemに table: {headers:[...], rows:[[...],[...]]} を足すと、セル形式の表が自動で追加される
+  const itemsHtml = m.items.map(it=>{
+    const tableHtml = it.table ? `
+      <table class="info-table">
+        <thead><tr>${it.table.headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead>
+        <tbody>${it.table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table>
+    ` : "";
+    return `
     <div class="item">
       <div class="label">押すタイミング</div>
       <div class="timing">${it.timing}</div>
       <div class="label">わかること</div>
       <div class="info">${it.info}</div>
+      ${tableHtml}
     </div>
-  `).join("");
+  `;
+  }).join("");
   const sourcesHtml = m.sources ? `<div class="sources">出典: ${m.sources.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("")}</div>` : "";
+  // machinesの各項目に image: "images/xxx.jpg" のようなパスを足すと、ここに自動で表示される
+  const imageHtml = m.image ? `<img class="card-image" src="${m.image}" alt="${m.name}" loading="lazy">` : "";
   card.innerHTML = `
     <div class="card-head">
       <div class="card-title">
@@ -595,6 +645,7 @@ function buildCard(m){
       </div>
     </div>
     <div class="card-body">
+      ${imageHtml}
       ${itemsHtml}
       ${sourcesHtml}
     </div>
