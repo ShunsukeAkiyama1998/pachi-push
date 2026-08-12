@@ -233,7 +233,8 @@
     margin:12px 0;
   }
   .info-table{
-    width:100%;
+    width:auto;
+    max-width:100%;
     border-collapse:collapse;
     margin-top:8px;
     font-size:0.82rem;
@@ -242,6 +243,9 @@
     border:1px solid var(--card-border);
     padding:6px 8px;
     text-align:left;
+  }
+  .info-table td:first-child, .info-table th:first-child{
+    white-space:nowrap;
   }
   .info-table th{
     background:#232842;
